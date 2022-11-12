@@ -1,8 +1,9 @@
+```lua
 local engine = loadstring(game:HttpGet("https://raw.githubusercontent.com/juywvm/ui-libs/main/RB_IMGUI_V2_SEXXYY/source.lua"))()
 
 local window1 = engine.new({
     text = "Ngdat Hax",
-    size = UDim2.new(400, 300),
+    size = UDim2.new(500, 400),
 })
 
 window1.open()
@@ -11,39 +12,39 @@ local tab1 = window1.new({
     text = "Main",
 })
 
-local label1 = Main.new("label", {
-    text = "Jailbreak",
-    color = Color3.new(255, 255, 255),
+local label1 = tab1.new("label", {
+    text = "JailBreak",
+    color = Color3.new(255, 0, 0),
 })
 
-local button1 = tab1.new("button", {
-    text = "Slient Aim",
+local switch1 = tab1.new("switch", {
+    text = "Slient Aim";
 })
-button1.event:Connect(function()
-    getgenv().toggled = Value
+switch1.set(true)
+switch1.event:Connect(function(bool)
+    getgenv().toggled = bool
 end)
---slient aim
-getgenv().toggled = true --/ true & false
 
-getgenv().old = getgenv().old or require(game:getservice("replicatedstorage").module.raycast).rayignorenoncollidewithignorelist
+
+getgenv().old = getgenv().old or require(game:GetService("ReplicatedStorage").Module.RayCast).RayIgnoreNonCollideWithIgnoreList
 
 if getgenv().toggled then
- require(game:getservice("replicatedstorage").module.raycast).rayignorenoncollidewithignorelist = function(...)
-  local nearestdistance, nearestenemy = 600, nil
-     for i,v in pairs(game:getservice("players"):getplayers()) do
-      if v.team ~= game:getservice("players").localplayer.team and v.character and v.character:findfirstchild("humanoidrootpart") then
-          if (v.character.humanoidrootpart.position - game:getservice("players").localplayer.character.humanoidrootpart.position).magnitude < nearestdistance then
-           nearestdistance, nearestenemy = (v.character.humanoidrootpart.position - game:getservice("players").localplayer.character.humanoidrootpart.position).magnitude, v
+ require(game:GetService("ReplicatedStorage").Module.RayCast).RayIgnoreNonCollideWithIgnoreList = function(...)
+  local nearestDistance, nearestEnemy = 600, nil
+     for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+      if v.Team ~= game:GetService("Players").LocalPlayer.Team and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+          if (v.Character.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < nearestDistance then
+           nearestDistance, nearestEnemy = (v.Character.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude, v
           end
       end
      end
      local arg = {old(...)}
-     if (tostring(getfenv(2).script) == "bulletemitter" or tostring(getfenv(2).script) == "taser") and nearestenemy then
-      arg[1] = nearestenemy.character.humanoidrootpart
-      arg[2] = nearestenemy.character.humanoidrootpart.position
+     if (tostring(getfenv(2).script) == "BulletEmitter" or tostring(getfenv(2).script) == "Taser") and nearestEnemy then
+      arg[1] = nearestEnemy.Character.HumanoidRootPart
+      arg[2] = nearestEnemy.Character.HumanoidRootPart.Position
   end
      return unpack(arg)
  end
 else
- require(game:getservice("replicatedstorage").module.raycast).rayignorenoncollidewithignorelist = getgenv().old
+ require(game:GetService("ReplicatedStorage").Module.RayCast).RayIgnoreNonCollideWithIgnoreList = getgenv().old
 end
