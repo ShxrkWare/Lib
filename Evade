@@ -56,8 +56,6 @@ local revive = function()
 end
 
 
-            TicketsLabelC5:Set('Total Tickets: '..localplayer:GetAttribute('Tickets'))
-
             if game.Players.LocalPlayer:GetAttribute('InMenu') ~= true and localplayer:GetAttribute('Dead') ~= true then
                 for i,v in pairs(game:GetService("Workspace").Game.Effects.Tickets:GetChildren()) do
                     localplayer.Character.HumanoidRootPart.CFrame = CFrame.new(v:WaitForChild('HumanoidRootPart').Position)
@@ -74,10 +72,6 @@ end
     end
 end
 
-            TypeLabelC5:Set('Ticket Farm')
-            DurationLabelC5:Set('Duration:'..convertToHMS(Settings.stats.TicketFarm.duration))
-            EarnedLabelC5:Set('Earned:'.. formatNumber(Settings.stats.TicketFarm.earned))
-            TicketsLabelC5:Set('Total Tickets: '..localplayer:GetAttribute('Tickets'))
 
             if game.Players.LocalPlayer:GetAttribute('InMenu') ~= true and localplayer:GetAttribute('Dead') ~= true then
                 for i,v in pairs(game:GetService("Workspace").Game.Effects.Tickets:GetChildren()) do
@@ -108,11 +102,7 @@ task.spawn(function()
             localplayer.PlayerScripts.CameraShake.Value = CFrame.new(0,0,0) * CFrame.new(0,0,0)
         end
         if Settings.moneyfarm then
-            TypeLabelC5:Set('Money Farm')
-            DurationLabelC5:Set('Duration:'..convertToHMS(Settings.stats.TokenFarm.duration))
-            EarnedLabelC5:Set('Earned:'.. formatNumber(Settings.stats.TokenFarm.earned))
-            TicketsLabelC5:Set('Total Tokens: '..formatNumber(localplayer:GetAttribute('Tokens')))
-            
+         
             if localplayer:GetAttribute("InMenu") and localplayer:GetAttribute("Dead") ~= true then
                 game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
             end
