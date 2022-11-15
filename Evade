@@ -71,7 +71,6 @@ end
                 task.wait(2)
             end
         end
-    end
 end)
 
             TypeLabelC5:Set('Ticket Farm')
