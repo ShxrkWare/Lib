@@ -71,7 +71,8 @@ end
                 task.wait(2)
             end
         end
-end)
+    end
+end
 
             TypeLabelC5:Set('Ticket Farm')
             DurationLabelC5:Set('Duration:'..convertToHMS(Settings.stats.TicketFarm.duration))
