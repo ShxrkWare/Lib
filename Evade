@@ -6,6 +6,10 @@ local localplayer = Players.LocalPlayer;
 
 local engine = loadstring(game:HttpGet("https://raw.githubusercontent.com/juywvm/ui-libs/main/RB_IMGUI_V2_SEXXYY/source.lua"))()
 
+local WorkspacePlayers = game:GetService("Workspace").Game.Players;
+local Players = game:GetService('Players');
+local localplayer = Players.LocalPlayer;
+
 getgenv().Settings = {
     moneyfarm = false,
     afkfarm = false,
