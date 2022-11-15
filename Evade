@@ -1,0 +1,224 @@
+local WorkspacePlayers = game:GetService("Workspace").Game.Players;
+local Players = game:GetService('Players');
+local localplayer = Players.LocalPlayer;
+
+-- semicolon but cool :sunglasses:
+
+local engine = loadstring(game:HttpGet("https://raw.githubusercontent.com/juywvm/ui-libs/main/RB_IMGUI_V2_SEXXYY/source.lua"))()
+
+getgenv().Settings = {
+    moneyfarm = false,
+    afkfarm = false,
+    NoCameraShake = false,
+    AutoRespawn = false,
+    TicketFarm = false,
+    Jump = 3,
+    reviveTime = 3,
+
+    stats = {
+        TicketFarm = {
+            earned = nil,
+            duration = 0
+        },
+
+        TokenFarm = {
+            earned = nil,
+            duration = 0
+        }
+
+    }
+}
+local GetDownedPlr = function()
+    for i,v in pairs(WorkspacePlayers:GetChildren()) do
+        if v:GetAttribute("Downed") then
+            return v
+        end
+    end
+end
+--shit auto farm
+local revive = function()
+    local downedplr = GetDownedPlr()
+    if downedplr ~= nil and downedplr:FindFirstChild('HumanoidRootPart') then
+        task.spawn(function()
+            while task.wait() do
+                if localplayer.Character then
+                    workspace.Game.Settings:SetAttribute("ReviveTime", 2.2)
+                    localplayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(downedplr:FindFirstChild('HumanoidRootPart').Position.X, downedplr:FindFirstChild('HumanoidRootPart').Position.Y + 3, downedplr:FindFirstChild('HumanoidRootPart').Position.Z)
+                    task.wait()
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), false)
+                    task.wait(4.5)
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+                    break
+                end
+            end
+        end)
+    end
+end
+
+
+            TicketsLabelC5:Set('Total Tickets: '..localplayer:GetAttribute('Tickets'))
+
+            if game.Players.LocalPlayer:GetAttribute('InMenu') ~= true and localplayer:GetAttribute('Dead') ~= true then
+                for i,v in pairs(game:GetService("Workspace").Game.Effects.Tickets:GetChildren()) do
+                    localplayer.Character.HumanoidRootPart.CFrame = CFrame.new(v:WaitForChild('HumanoidRootPart').Position)
+                end
+            else
+                task.wait(2)
+                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+            end
+            if localplayer.Character and localplayer.Character:GetAttribute("Downed") then
+                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+                task.wait(2)
+            end
+        end
+    end
+end)
+
+            TypeLabelC5:Set('Ticket Farm')
+            DurationLabelC5:Set('Duration:'..convertToHMS(Settings.stats.TicketFarm.duration))
+            EarnedLabelC5:Set('Earned:'.. formatNumber(Settings.stats.TicketFarm.earned))
+            TicketsLabelC5:Set('Total Tickets: '..localplayer:GetAttribute('Tickets'))
+
+            if game.Players.LocalPlayer:GetAttribute('InMenu') ~= true and localplayer:GetAttribute('Dead') ~= true then
+                for i,v in pairs(game:GetService("Workspace").Game.Effects.Tickets:GetChildren()) do
+                    localplayer.Character.HumanoidRootPart.CFrame = CFrame.new(v:WaitForChild('HumanoidRootPart').Position)
+                end
+            else
+                task.wait(2)
+                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+            end
+            if localplayer.Character and localplayer.Character:GetAttribute("Downed") then
+                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+                task.wait(2)
+            end
+        end
+    end
+end)
+
+
+task.spawn(function()
+    while task.wait() do
+        if Settings.AutoRespawn then
+             if localplayer.Character and localplayer.Character:GetAttribute("Downed") then
+                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+             end
+        end
+
+        if Settings.NoCameraShake then
+            localplayer.PlayerScripts.CameraShake.Value = CFrame.new(0,0,0) * CFrame.new(0,0,0)
+        end
+        if Settings.moneyfarm then
+            TypeLabelC5:Set('Money Farm')
+            DurationLabelC5:Set('Duration:'..convertToHMS(Settings.stats.TokenFarm.duration))
+            EarnedLabelC5:Set('Earned:'.. formatNumber(Settings.stats.TokenFarm.earned))
+            TicketsLabelC5:Set('Total Tokens: '..formatNumber(localplayer:GetAttribute('Tokens')))
+            
+            if localplayer:GetAttribute("InMenu") and localplayer:GetAttribute("Dead") ~= true then
+                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+            end
+            if localplayer.Character and localplayer.Character:GetAttribute("Downed") then
+                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+                task.wait(3)
+            else
+                revive()
+                task.wait(1)
+            end
+
+        end
+        if Settings.moneyfarm == false and Settings.afkfarm and localplayer.Character:FindFirstChild('HumanoidRootPart') ~= nil then
+            localplayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(6007, 7005, 8005)
+        end
+    end
+end)
+
+--Infinite yield's Anti afk
+local GC = getconnections or get_signal_cons
+	if GC then
+		for i,v in pairs(GC(localplayer.Idled)) do
+			if v["Disable"] then
+				v["Disable"](v)
+			elseif v["Disconnect"] then
+				v["Disconnect"](v)
+			end
+		end
+	else
+		localplayer.Idled:Connect(function()
+			local VirtualUser = game:GetService("VirtualUser")
+			VirtualUser:CaptureController()
+			VirtualUser:ClickButton2(Vector2.new())
+		end)
+	end
+
+
+
+----
+local window1 = engine.new({
+    text = "Ngdat-Hax Evade",
+    size = UDim2.new(500, 400),
+})
+
+window1.open()
+
+local tab1 = window1.new({
+    text = "Main",
+})
+
+local label1 = tab1.new("label", {
+    text = "Bản Hack đang open testing sẽ có lỗi",
+    color = Color3.new(255, 255, 255),
+})
+
+local switch1 = tab1.new("switch", {
+    text = "Ticket Farm";
+})
+switch1.set(false)
+switch1.event:Connect(function(bool)
+    Settings.TicketFarm = bool
+end)
+
+local switch1 = tab1.new("switch", {
+    text = "Money Farm";
+})
+switch1.set(false)
+switch1.event:Connect(function(bool)
+    Settings.moneyfarm = bool
+end)
+
+local switch1 = tab1.new("switch", {
+    text = "AFK Farm";
+})
+switch1.set(false)
+switch1.event:Connect(function(bool)
+    Settings.afkfarm = bool
+end)
+
+local switch1 = tab1.new("switch", {
+    text = "No Camera Shake";
+})
+switch1.set(false)
+switch1.event:Connect(function(bool)
+    Settings.NoCameraShake = bool
+end)
+
+local switch1 = tab1.new("switch", {
+    text = "Fast Revice";
+})
+switch1.set(false)
+switch1.event:Connect(function(bool)
+    if bool then
+workspace.Game.Settings:SetAttribute("ReviveTime", 2.2)
+    else
+        workspace.Game.Settings:SetAttribute("ReviveTime", Settings.reviveTime)
+    end
+end)
+
+local switch1 = tab1.new("switch", {
+    text = "Auto Respawn";
+})
+switch1.set(false)
+switch1.event:Connect(function(bool)
+    Settings.AutoRespawn = bool
+end)
+
